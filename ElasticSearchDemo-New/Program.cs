@@ -9,8 +9,6 @@ using System.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -29,12 +27,6 @@ var configuration = new ConfigurationBuilder()
 //http://elastic:qmVRdqI*zCMGkUU72P5n@10.50.50.30:9200
 //http://elastic:qmVRdqI*zCMGkUU72P5n@elastic.wttco.com:9200
 
-
-
-
-
-
-
 #region Elastic Search
 
 Log.Logger = new LoggerConfiguration()
@@ -42,8 +34,6 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 #endregion
-
-
 
 
 //ConfigureLogging();
@@ -63,7 +53,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseDeveloperExceptionPage();
 
-
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
@@ -71,8 +60,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-
-
 
 app.Run();
