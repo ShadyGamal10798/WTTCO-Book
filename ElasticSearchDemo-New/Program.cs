@@ -1,20 +1,16 @@
-using Serilog.Sinks.Elasticsearch;
-using Serilog;
-using OpenTelemetry;
-using OpenTelemetry.Trace;
-using Google.Protobuf.WellKnownTypes;
 using Elastic.Apm.NetCoreAll;
-using System.Configuration;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+//Read AppSettings
 var configuration = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json")
@@ -22,11 +18,7 @@ var configuration = new ConfigurationBuilder()
         .Build();
 
 
-//Elasticsearch
-
-//http://elastic:qmVRdqI*zCMGkUU72P5n@10.50.50.30:9200
-//http://elastic:qmVRdqI*zCMGkUU72P5n@elastic.wttco.com:9200
-
+//Elasticsearch Configs
 #region Elastic Search
 
 Log.Logger = new LoggerConfiguration()
@@ -36,11 +28,13 @@ Log.Logger = new LoggerConfiguration()
 #endregion
 
 
-//ConfigureLogging();
+//Apply Serilog
 builder.Host.UseSerilog();
 
 var app = builder.Build();
 
+
+//Apply Apm Of Elastic
 app.UseAllElasticApm(builder.Configuration);
 
 
@@ -53,6 +47,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseDeveloperExceptionPage();
 
+//PipeLine Of Serilog
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
